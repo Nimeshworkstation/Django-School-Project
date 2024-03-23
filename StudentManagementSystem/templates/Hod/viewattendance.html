@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if attendance is not None %}
+<div class="content container-fluid">
+               <div class="page-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                        <h3 class="page-title">Attendence</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="index.html">Attendance</a></li>
+                           <li class="breadcrumb-item active">Students</li></li>
+                           <li class="breadcrumb-item active">Course:&nbsp{{subjectdisplay.subject_name}}</li></li>
+                           <li class="breadcrumb-item active">Batch:&nbsp{{sessiondisplay.session_start}}-{{sessiondisplay.session_end}}</li>
+                        </ul>
+                     </div>
+                     <div class="col-auto text-right float-right ml-auto">
+                        <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+                        <a href="{% url 'addstudent' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card card-table">
+                        <div class="card-body">
+                           <div class="table-responsive">
+                              <table class="table table-hover table-center mb-0 " id="table_id">
+                                 <thead>
+                                    {% include 'includes/messages.html' %}
+                                    <tr>
+                                       <th>ID</th>
+                                       <th>Name</th>
+                                       <th>Email</th>
+   
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                  {% for s in attendance %}
+                                    <tr>
+                                       <td>{{s.id}}</td>
+                                       <td>
+                                          <h2 class="table-avatar">
+                                             <a href="student-details.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="{{s.student_id.user.profile_pic.url}}" alt="User Image"></a>
+                                             <a href="student-details.html">{{s.student_id.user.first_name}}&nbsp{{s.student_id.user.last_name}}</a>
+                                          </h2>
+                                       </td>
+                                       <td>{{s.student_id.user.email}}</td>
+                                       
+                                       
+                                    </tr>
+                                    {% endfor %}
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+{% else %}
+<div class="content container-fluid">
+<div class="page-header">
+<div class="row align-items-center">
+<div class="col">
+<h3 class="page-title">View Attendance</h3>
+<ul class="breadcrumb">
+<li class="breadcrumb-item"><a href="subjects.html">Attendance</a></li>
+<li class="breadcrumb-item active">View attendance</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-12">
+<div class="card">
+<div class="card-body">
+    
+    {% include 'includes/messages.html' %}
+<form method="post" action="{% url 'hodviewattendance' %}">
+  {% csrf_token %}
+<div class="row">
+<div class="col-12">
+<h5 class="form-title"><span>View Attendance</span></h5>
+</div>
+
+<div class="col-12 col-sm-6">
+<div class="form-group">
+<label>Subject</label>
+<select class="form-control" name="subject_id" required>
+                                          <option>Select Subject</option>
+                                          {% for c in subject%}
+                                          <option value="{{c.id}}">{{c.subject_name}}</option>
+                                          {% endfor %}
+                                       </select></div>
+</div>
+<div class="col-12 col-sm-6">
+<div class="form-group">
+<label>Session</label>
+<select class="form-control" name="sessionyear_id" required>
+                                          <option>Select session</option>
+                                          {% for c in session%}
+                                          <option value="{{c.id}}">{{c.session_start}} to {{c.session_end}}</option>
+                                          {% endfor %}
+                                       </select></div>
+</div>
+
+<div class="col-12 col-sm-6">
+<div class="form-group">
+<label> Select Attendance Date</label>
+<input type=date class="form-control" name="attendance_date" required>
+</div>
+
+<div class="col-12">
+<button type="submit" class="btn btn-primary">Show Attended  Student</button>
+</div>
+</div>
+</form>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endif %}
+{% endblock %}

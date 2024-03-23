@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if attendance is not None %}
+
+<div class="content container-fluid">
+               <div class="page-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                        <h3 class="page-title">Attendence</h3>
+                        <ul class="breadcrumb">
+                           <li class="breadcrumb-item"><a href="index.html">Attendance</a></li>
+                           <li class="breadcrumb-item active">View Attendance</li></li>
+                           <li class="breadcrumb-item active">Course:&nbsp{{subjectdisplay.subject_name}}</li></li>
+                           
+                        </ul>
+                     </div>
+                    
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="card card-table">
+                        <div class="card-body">
+                           <div class="table-responsive">
+                              <table class="table table-hover table-center mb-0 " id="table_id">
+                                 <thead>
+                                    {% include 'includes/messages.html' %}
+                                    <tr>
+                                       <th>Date</th>
+                                       <th>Subject Name</th>
+                                       
+   
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                  {% for s in attendance %}
+                                    <tr>
+                                       <td>{{s.attendance_id.Attendance_date}}</td>
+                                      
+                                       <td>{{s.attendance_id.subject_id}}</td>
+                                       
+                                       
+                                    </tr>
+                                    {% endfor %}
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+{% else %}
+<div class="row">
+<div class="col-sm-12">
+<div class="card">
+<div class="card-body">
+<form action="{% url 'studentviewattendance' %}" method="post">
+	{% csrf_token %}
+<div class="col-12">
+<h5 class="form-title"><span>Attendance </span></h5>
+</div>
+                        
+{% include 'includes/messages.html' %}
+<div class="col-12 col-sm-6">
+</div>
+<div class="col-12 col-sm-6">
+<div class="form-group">
+<label>Subject</label>
+<select class="form-control" name="subject_id" required>
+                                          <option>Select Subject</option>
+                                          {% for c in subject%}
+                                          <option value="{{c.id}}">{{c.subject_name}}</option>
+                                          {% endfor %}
+                                       </select></div>
+</div>
+
+<div class="col-12">
+<button type="submit" class="btn btn-primary">View</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+{% endif %}
+
+{% endblock %}
